@@ -61,4 +61,7 @@
     <!-- Smooth Display -->
     <string name="smooth_display">Smooth display</string>
 
+    <!-- USB tethering QS tile -->
+    <string name="quick_settings_usb_tether_label">USB tethering</string>
+
 </resources>

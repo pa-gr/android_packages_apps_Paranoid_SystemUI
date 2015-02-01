@@ -28,6 +28,7 @@ import co.aospa.systemui.qs.tiles.ForceHbmTile;
 import co.aospa.systemui.qs.tiles.HeadsUpTile;
 import co.aospa.systemui.qs.tiles.PowerShareTile;
 import co.aospa.systemui.qs.tiles.SmoothDisplayTile;
+import co.aospa.systemui.qs.tiles.UsbTetherTile;
 import co.aospa.systemui.qs.tiles.WifiTile
 import dagger.Binds
 import dagger.Module
@@ -102,5 +103,11 @@ interface ParanoidQSModule {
     @IntoMap
     @StringKey(SmoothDisplayTile.TILE_SPEC)
     fun bindSmoothDisplayTile(smoothDisplayTile: SmoothDisplayTile): QSTileImpl<*>
+
+    /** Inject UsbTetherTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(UsbTetherTile.TILE_SPEC)
+    fun bindUsbTetherTile(usbTetherTile: UsbTetherTile): QSTileImpl<*>
 
 }
