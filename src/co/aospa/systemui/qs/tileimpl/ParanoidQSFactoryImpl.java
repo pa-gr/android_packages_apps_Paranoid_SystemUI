@@ -59,6 +59,7 @@ import javax.inject.Provider;
 import co.aospa.systemui.qs.tiles.AODTile;
 import co.aospa.systemui.qs.tiles.CaffeineTile;
 import co.aospa.systemui.qs.tiles.DataSwitchTile;
+import co.aospa.systemui.qs.tiles.DcDimmingTile;
 import co.aospa.systemui.qs.tiles.HeadsUpTile;
 import co.aospa.systemui.qs.tiles.SoundTile;
 import co.aospa.systemui.qs.tiles.UsbTetherTile;
@@ -73,6 +74,7 @@ public class ParanoidQSFactoryImpl extends QSFactoryImpl {
     private final Provider<UsbTetherTile> mUsbTetherTileProvider;
     private final Provider<AODTile> mAODTileProvider;
     private final Provider<SoundTile> mSoundTileProvider;
+    private final Provider<DcDimmingTile> mDcDimmingTileProvider;
 
     @Inject
     public ParanoidQSFactoryImpl(Lazy<QSHost> qsHostLazy,
@@ -112,7 +114,8 @@ public class ParanoidQSFactoryImpl extends QSFactoryImpl {
             Provider<HeadsUpTile> headsUpTileProvider,
             Provider<UsbTetherTile> usbTetherTileProvider,
             Provider<AODTile> aodTileProvider,
-            Provider<SoundTile> soundTileProvider) {
+            Provider<SoundTile> soundTileProvider,
+            Provider<DcDimmingTile> dcDimTileProvider) {
         super(qsHostLazy, customTileBuilderProvider, wifiTileProvider, internetTileProvider,
                 bluetoothTileProvider, cellularTileProvider, dndTileProvider,
                 colorInversionTileProvider, airplaneModeTileProvider, workModeTileProvider,
@@ -130,6 +133,7 @@ public class ParanoidQSFactoryImpl extends QSFactoryImpl {
         mUsbTetherTileProvider = usbTetherTileProvider;
         mAODTileProvider = aodTileProvider;
         mSoundTileProvider = soundTileProvider;
+        mDcDimmingTileProvider = dcDimTileProvider;
     }
 
     @Nullable
@@ -148,6 +152,8 @@ public class ParanoidQSFactoryImpl extends QSFactoryImpl {
                 return mAODTileProvider.get();
             case "sound":
                 return mSoundTileProvider.get();
+            case "dc_dimming":
+                return mDcDimmingTileProvider.get();
             default:
                 return super.createTileInternal(tileSpec);
         }
