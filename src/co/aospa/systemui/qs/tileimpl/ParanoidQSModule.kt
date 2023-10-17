@@ -24,6 +24,7 @@ import co.aospa.systemui.qs.tiles.CaffeineTile;
 import co.aospa.systemui.qs.tiles.CellularTile
 import co.aospa.systemui.qs.tiles.DataSwitchTile;
 import co.aospa.systemui.qs.tiles.DcDimmingTile;
+import co.aospa.systemui.qs.tiles.ForceHbmTile;
 import co.aospa.systemui.qs.tiles.HeadsUpTile;
 import co.aospa.systemui.qs.tiles.PowerShareTile;
 import co.aospa.systemui.qs.tiles.WifiTile
@@ -88,5 +89,11 @@ interface ParanoidQSModule {
     @IntoMap
     @StringKey(WifiTile.TILE_SPEC)
     fun bindWifiTile(wifiTile: WifiTile): QSTileImpl<*>
+
+    /** Inject ForceHbmTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(ForceHbmTile.TILE_SPEC)
+    fun bindForceHbmTile(forceHbmTile: ForceHbmTile): QSTileImpl<*>
 
 }

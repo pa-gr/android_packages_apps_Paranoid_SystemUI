@@ -54,4 +54,8 @@
     <string name="bluetooth_is_off">Bluetooth is off</string>
     <string name="tap_a_device_to_connect">Tap a device to connect/disconnect</string>
 
+    <!-- Force HBM -->
+    <string name="force_hbm">Force HBM</string>
+    <string name="auto_brightness_is_off">Auto brightness is off</string>
+
 </resources>
