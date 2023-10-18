@@ -58,4 +58,7 @@
     <string name="force_hbm">Force HBM</string>
     <string name="auto_brightness_is_off">Auto brightness is off</string>
 
+    <!-- Smooth Display -->
+    <string name="smooth_display">Smooth display</string>
+
 </resources>

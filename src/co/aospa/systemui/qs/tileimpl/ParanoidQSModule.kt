@@ -27,6 +27,7 @@ import co.aospa.systemui.qs.tiles.DcDimmingTile;
 import co.aospa.systemui.qs.tiles.ForceHbmTile;
 import co.aospa.systemui.qs.tiles.HeadsUpTile;
 import co.aospa.systemui.qs.tiles.PowerShareTile;
+import co.aospa.systemui.qs.tiles.SmoothDisplayTile;
 import co.aospa.systemui.qs.tiles.WifiTile
 import dagger.Binds
 import dagger.Module
@@ -95,5 +96,11 @@ interface ParanoidQSModule {
     @IntoMap
     @StringKey(ForceHbmTile.TILE_SPEC)
     fun bindForceHbmTile(forceHbmTile: ForceHbmTile): QSTileImpl<*>
+
+    /** Inject SmoothDisplayTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(SmoothDisplayTile.TILE_SPEC)
+    fun bindSmoothDisplayTile(smoothDisplayTile: SmoothDisplayTile): QSTileImpl<*>
 
 }
