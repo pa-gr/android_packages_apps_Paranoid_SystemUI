@@ -133,7 +133,8 @@ public class SoundTile extends QSTileImpl<BooleanState> {
         }
         switch (mAudioManager.getRingerModeInternal()) {
             case AudioManager.RINGER_MODE_NORMAL:
-                state.icon = ResourceIcon.get(R.drawable.ic_qs_ringer_audible);
+                state.icon = ResourceIcon.get(isSeparateNotification()
+                        ? R.drawable.ic_qs_speaker_audible : R.drawable.ic_qs_ringer_audible);
                 state.secondaryLabel = mContext.getString(R.string.quick_settings_sound_ring);
                 state.state = Tile.STATE_ACTIVE;
                 break;
@@ -143,7 +144,8 @@ public class SoundTile extends QSTileImpl<BooleanState> {
                 state.state = Tile.STATE_INACTIVE;
                 break;
             case AudioManager.RINGER_MODE_SILENT:
-                state.icon = ResourceIcon.get(R.drawable.ic_qs_ringer_silent);
+                state.icon = ResourceIcon.get(isSeparateNotification()
+                        ? R.drawable.ic_qs_speaker_silent : R.drawable.ic_qs_ringer_silent);
                 state.secondaryLabel = mContext.getString(R.string.quick_settings_sound_silent);
                 state.state = Tile.STATE_INACTIVE;
                 break;
@@ -153,5 +155,10 @@ public class SoundTile extends QSTileImpl<BooleanState> {
     @Override
     public int getMetricsCategory() {
         return -1;
+    }
+
+    private boolean isSeparateNotification() {
+        return Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.VOLUME_SEPARATE_NOTIFICATION, 0) == 1;
     }
 }
