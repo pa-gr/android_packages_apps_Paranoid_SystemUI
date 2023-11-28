@@ -42,7 +42,9 @@ import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.logging.QSLogger;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.qs.tiles.SecureQSTile;
 import com.android.systemui.statusbar.policy.BatteryController;
+import com.android.systemui.statusbar.policy.KeyguardStateController;
 
 import vendor.aospa.powershare.IPowerShare;
 
@@ -50,7 +52,7 @@ import java.util.NoSuchElementException;
 
 import javax.inject.Inject;
 
-public class PowerShareTile extends QSTileImpl<BooleanState>
+public class PowerShareTile extends SecureQSTile<BooleanState>
         implements BatteryController.BatteryStateChangeCallback {
 
     public static final String TILE_SPEC = "powershare";
@@ -73,9 +75,10 @@ public class PowerShareTile extends QSTileImpl<BooleanState>
             StatusBarStateController statusBarStateController,
             ActivityStarter activityStarter,
             QSLogger qsLogger,
-            BatteryController batteryController) {
+            BatteryController batteryController,
+            KeyguardStateController keyguardStateController) {
         super(host, backgroundLooper, mainHandler, falsingManager, metricsLogger,
-                statusBarStateController, activityStarter, qsLogger);
+                statusBarStateController, activityStarter, qsLogger, keyguardStateController);
         mPowerShare = getPowerShare();
         if (mPowerShare == null) {
             return;
@@ -150,7 +153,10 @@ public class PowerShareTile extends QSTileImpl<BooleanState>
     }
 
     @Override
-    public void handleClick(@Nullable View view) {
+    protected void handleClick(@Nullable View view, boolean keyguardShowing) {
+        if (checkKeyguard(view, keyguardShowing)) {
+            return;
+        }
         try {
             boolean powerShareEnabled = mPowerShare.isEnabled();
 
