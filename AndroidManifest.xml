@@ -21,6 +21,18 @@
         android:appComponentFactory="co.aospa.systemui.ParanoidSystemUIAppComponentFactory">
 
         <!-- Content goes here -->
+        <provider
+            android:name="com.android.systemui.keyguard.KeyguardSliceProvider"
+            tools:node="remove">
+        </provider>
+
+        <provider
+            android:name="co.aospa.systemui.keyguard.ParanoidKeyguardSliceProvider"
+            android:authorities="com.android.systemui.keyguard"
+            android:enabled="true"
+            android:exported="true"
+            android:grantUriPermissions="true">
+        </provider>
 
     </application>
 
