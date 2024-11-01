@@ -41,13 +41,15 @@ import com.android.systemui.qs.QsEventLogger;
 import com.android.systemui.qs.SettingObserver;
 import com.android.systemui.qs.logging.QSLogger;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.qs.tiles.SecureQSTile;
 import com.android.systemui.settings.UserTracker;
 import com.android.systemui.statusbar.policy.BatteryController;
+import com.android.systemui.statusbar.policy.KeyguardStateController;
 import com.android.systemui.util.settings.SecureSettings;
 
 import javax.inject.Inject;
 
-public class AlwaysOnDisplayTile extends QSTileImpl<State> implements
+public class AlwaysOnDisplayTile extends SecureQSTile<State> implements
         BatteryController.BatteryStateChangeCallback {
 
     public static final String TILE_SPEC = "aod";
@@ -70,10 +72,11 @@ public class AlwaysOnDisplayTile extends QSTileImpl<State> implements
             QSLogger qsLogger,
             SecureSettings secureSettings,
             BatteryController batteryController,
-            UserTracker userTracker
+            UserTracker userTracker,
+            KeyguardStateController keyguardStateController
     ) {
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager, metricsLogger,
-                statusBarStateController, activityStarter, qsLogger);
+                statusBarStateController, activityStarter, qsLogger, keyguardStateController);
 
         mSetting = new SettingObserver(secureSettings, mHandler, Settings.Secure.DOZE_ALWAYS_ON,
                 userTracker.getUserId()) {
@@ -133,7 +136,10 @@ public class AlwaysOnDisplayTile extends QSTileImpl<State> implements
     }
 
     @Override
-    protected void handleClick(@Nullable View view) {
+    protected void handleClick(@Nullable View view, boolean keyguardShowing) {
+        if (checkKeyguard(view, keyguardShowing)) {
+            return;
+        }
         int dozeState = getDozeState();
         dozeState = dozeState < 2 ? dozeState + 1 : 0;
         Settings.Secure.putIntForUser(mContext.getContentResolver(), Settings.Secure.DOZE_ALWAYS_ON,

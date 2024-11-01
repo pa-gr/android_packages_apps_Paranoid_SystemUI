@@ -35,12 +35,14 @@ import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
 import com.android.systemui.qs.logging.QSLogger;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.qs.tiles.SecureQSTile;
+import com.android.systemui.statusbar.policy.KeyguardStateController;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class DataSwitchTile extends QSTileImpl<BooleanState> {
+public class DataSwitchTile extends SecureQSTile<BooleanState> {
     public static final String TILE_SPEC = "dataswitch";
     private static final String SETTING_USER_PREF_DATA_SUB = "user_preferred_data_sub";
     private final SubscriptionManager mSubscriptionManager;
@@ -76,10 +78,11 @@ public class DataSwitchTile extends QSTileImpl<BooleanState> {
             MetricsLogger metricsLogger,
             StatusBarStateController statusBarStateController,
             ActivityStarter activityStarter,
-            QSLogger qsLogger
+            QSLogger qsLogger,
+            KeyguardStateController keyguardStateController
     ) {
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager, metricsLogger,
-                statusBarStateController, activityStarter, qsLogger);
+                statusBarStateController, activityStarter, qsLogger, keyguardStateController);
         mSubscriptionManager = SubscriptionManager.from(host.getContext());
         mTelephonyManager = TelephonyManager.from(host.getContext());
     }
@@ -134,7 +137,10 @@ public class DataSwitchTile extends QSTileImpl<BooleanState> {
     }
 
     @Override
-    public void handleClick(@Nullable View view) {
+    protected void handleClick(@Nullable View view, boolean keyguardShowing) {
+        if (checkKeyguard(view, keyguardShowing)) {
+            return;
+        }
         if (!mCanSwitch) {
             Log.d(TAG, "Call state=" + mTelephonyManager.getCallState());
         } else if (mSimCount == 0) {

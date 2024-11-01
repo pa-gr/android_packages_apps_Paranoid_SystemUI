@@ -33,6 +33,7 @@ import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
 import com.android.systemui.plugins.FalsingManager;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
+import com.android.systemui.statusbar.policy.KeyguardStateController;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
 import com.android.systemui.qs.logging.QSLogger;
@@ -62,10 +63,12 @@ public class BluetoothDialogTile extends BluetoothTile {
             ActivityStarter activityStarter,
             QSLogger qsLogger,
             BluetoothController bluetoothController,
-            BluetoothDialogFactory bluetoothDialogFactory
+            BluetoothDialogFactory bluetoothDialogFactory,
+            KeyguardStateController keyguardStateController
     ) {
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager, metricsLogger,
-                statusBarStateController, activityStarter, qsLogger, bluetoothController);
+                statusBarStateController, activityStarter, qsLogger, bluetoothController,
+                keyguardStateController);
         mHandler = mainHandler;
         mBluetoothDialogFactory = bluetoothDialogFactory;
     }
@@ -78,7 +81,10 @@ public class BluetoothDialogTile extends BluetoothTile {
     }
 
     @Override
-    protected void handleClick(@Nullable View view) {
+    protected void handleClick(@Nullable View view, boolean keyguardShowing) {
+        if (checkKeyguard(view, keyguardShowing)) {
+            return;
+        }
         mHandler.post(() -> mBluetoothDialogFactory.create(true, view));
     }
 }
