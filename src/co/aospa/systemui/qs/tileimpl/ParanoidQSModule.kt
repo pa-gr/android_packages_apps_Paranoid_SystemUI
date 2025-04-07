@@ -24,7 +24,6 @@ import co.aospa.systemui.qs.tiles.DcDimmingTile
 import co.aospa.systemui.qs.tiles.FivegTile
 import co.aospa.systemui.qs.tiles.HeadsUpTile
 import co.aospa.systemui.qs.tiles.PowerShareTile
-import co.aospa.systemui.qs.tiles.SoundTile
 import co.aospa.systemui.qs.tiles.UsbTetherTile
 import co.aospa.systemui.qs.tiles.WifiTile
 import com.android.systemui.qs.tileimpl.QSTileImpl
@@ -89,12 +88,6 @@ interface ParanoidQSModule {
     @IntoMap
     @StringKey(UsbTetherTile.TILE_SPEC)
     fun bindUsbTetherTile(usbTetherTile: UsbTetherTile): QSTileImpl<*>
-
-    /** Inject SoundTile into tileMap in QSModule */
-    @Binds
-    @IntoMap
-    @StringKey(SoundTile.TILE_SPEC)
-    fun bindSoundTile(soundTile: SoundTile): QSTileImpl<*>
 
     /** Inject FivegTile into tileMap in QSModule */
     @Binds
